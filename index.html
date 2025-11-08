@@ -1,732 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosmic Clicker - Energy Collector</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background: #0a0a0a;
-            color: #ffffff;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cosmic Clicker - Energy Collector</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
 
-        /* Animated Starfield Background */
-        .starfield {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0a 100%);
-        }
+    <body>
+        <div class="starfield" id="starfield"></div>
 
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 3s infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .title {
-            font-size: 3rem;
-            font-weight: bold;
-            text-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff;
-            margin-bottom: 10px;
-            animation: pulse-glow 2s infinite;
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { text-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff; }
-            50% { text-shadow: 0 0 30px #00d4ff, 0 0 60px #00d4ff; }
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: #8b5cf6;
-            opacity: 0.8;
-        }
-
-        /* Stats Display */
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .stat-box {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 15px;
-            padding: 15px 25px;
-            text-align: center;
-            min-width: 150px;
-        }
-
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #00d4ff;
-            text-shadow: 0 0 10px #00d4ff;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: #8b5cf6;
-            margin-top: 5px;
-        }
-
-        /* Main Game Area */
-        .game-area {
-            display: flex;
-            gap: 30px;
-            align-items: flex-start;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* Clicker Section */
-        .clicker-section {
-            text-align: center;
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .cosmic-planet {
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            background: url('cosmic_planet.png') center/cover;
-            margin: 0 auto 20px;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.2s ease;
-            box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
-            animation: planet-glow 3s infinite;
-        }
-
-        @keyframes planet-glow {
-            0%, 100% { box-shadow: 0 0 50px rgba(0, 212, 255, 0.5); }
-            50% { box-shadow: 0 0 80px rgba(0, 212, 255, 0.8), 0 0 100px rgba(139, 92, 246, 0.3); }
-        }
-
-        .cosmic-planet:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 80px rgba(0, 212, 255, 0.8);
-        }
-
-        .cosmic-planet:active {
-            transform: scale(0.95);
-        }
-
-        .click-power {
-            font-size: 1.1rem;
-            color: #06ffa5;
-            margin-bottom: 10px;
-        }
-
-        /* Particle Container */
-        .particle-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: #00d4ff;
-            border-radius: 50%;
-            animation: particle-float 2s ease-out forwards;
-            box-shadow: 0 0 10px #00d4ff;
-        }
-
-        @keyframes particle-float {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-100px) scale(0);
-            }
-        }
-
-        .number-popup {
-            position: absolute;
-            color: #06ffa5;
-            font-weight: bold;
-            font-size: 1.2rem;
-            pointer-events: none;
-            animation: number-rise 1.5s ease-out forwards;
-            text-shadow: 0 0 10px #06ffa5;
-        }
-
-        @keyframes number-rise {
-            0% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-80px);
-            }
-        }
-
-        /* Upgrades Section */
-        .upgrades-section {
-            flex: 1;
-            min-width: 300px;
-            max-width: 400px;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            color: #8b5cf6;
-            margin-bottom: 20px;
-            text-align: center;
-            text-shadow: 0 0 10px #8b5cf6;
-        }
-
-        .upgrade-item {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .upgrade-item:hover {
-            border-color: #00d4ff;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .upgrade-item:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .upgrade-name {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #00d4ff;
-            margin-bottom: 5px;
-        }
-
-        .upgrade-description {
-            font-size: 0.9rem;
-            color: #cccccc;
-            margin-bottom: 8px;
-        }
-
-        .upgrade-cost {
-            font-size: 0.9rem;
-            color: #06ffa5;
-            font-weight: bold;
-        }
-
-        .upgrade-count {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            background: #8b5cf6;
-            color: white;
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        /* Achievements Section */
-        .achievements-section {
-            margin-top: 40px;
-            text-align: center;
-        }
-
-        .achievements-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .achievement {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 12px;
-            padding: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .achievement.unlocked {
-            border-color: #06ffa5;
-            box-shadow: 0 0 20px rgba(6, 255, 165, 0.3);
-        }
-
-        .achievement-name {
-            font-size: 1rem;
-            font-weight: bold;
-            color: #8b5cf6;
-            margin-bottom: 5px;
-        }
-
-        .achievement-description {
-            font-size: 0.9rem;
-            color: #cccccc;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .title {
-                font-size: 2rem;
-            }
-            
-            .stats {
-                gap: 15px;
-            }
-            
-            .stat-box {
-                min-width: 120px;
-                padding: 10px 15px;
-            }
-            
-            .cosmic-planet {
-                width: 200px;
-                height: 200px;
-            }
-            
-            .game-area {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(0, 212, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #00d4ff;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
-</head>
-<body>
-    <div class="starfield" id="starfield"></div>
-    
-    <div class="container">
-        <div class="header">
-            <h1 class="title">COSMIC CLICKER</h1>
-            <p class="subtitle">Collect Cosmic Energy from the Mystical Planet</p>
-        </div>
-
-        <div class="stats">
-            <div class="stat-box">
-                <div class="stat-value" id="energy">0</div>
-                <div class="stat-label">Cosmic Energy</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value" id="clickCount">0</div>
-                <div class="stat-label">Total Clicks</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value" id="energyPerSecond">0</div>
-                <div class="stat-label">Energy/Second</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value" id="playTime">00:00</div>
-                <div class="stat-label">Play Time</div>
-            </div>
-        </div>
-
-        <div class="game-area">
-            <div class="clicker-section">
-                <div class="cosmic-planet" id="planet">
-                    <div class="particle-container" id="particleContainer"></div>
+        <div class="container">
+            <div class="header">
+                <div class="header-controls">
+                    <button class="header-btn" id="aboutBtn">About</button>
+                    <button class="header-btn danger" id="newGameBtn">New Game</button>
                 </div>
-                <div class="click-power">Click Power: <span id="clickPower">1</span></div>
+                <h1 class="title">COSMIC CLICKER</h1>
+                <p class="subtitle">Collect Cosmic Energy from the Mystical Planet</p>
             </div>
 
-            <div class="upgrades-section">
-                <h2 class="section-title">Upgrades</h2>
-                <div id="upgradesList"></div>
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="energy">0</div>
+                    <div class="stat-label">Cosmic Energy</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="clickCount">0</div>
+                    <div class="stat-label">Total Clicks</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="energyPerSecond">0</div>
+                    <div class="stat-label">Energy/Second</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="playTime">00:00</div>
+                    <div class="stat-label">Play Time</div>
+                </div>
+            </div>
+
+            <div class="game-area">
+                <div class="clicker-section">
+                    <div class="cosmic-planet" id="planet">
+                        <div class="particle-container" id="particleContainer"></div>
+                    </div>
+                    <div class="click-power">Click Power: <span id="clickPower">1</span></div>
+                </div>
+
+                <div class="upgrades-section">
+                    <h2 class="section-title">Upgrades</h2>
+                    <div id="upgradesList"></div>
+                </div>
+            </div>
+
+            <div class="achievements-section">
+                <h2 class="section-title">Achievements</h2>
+                <div class="achievements-grid" id="achievementsGrid"></div>
             </div>
         </div>
 
-        <div class="achievements-section">
-            <h2 class="section-title">Achievements</h2>
-            <div class="achievements-grid" id="achievementsGrid"></div>
-        </div>
-    </div>
+        <!-- About Dialog -->
+        <dialog id="aboutDialog">
+            <div class="dialog-header">
+                <h2 class="dialog-title">About Cosmic Clicker</h2>
+            </div>
+            <div class="dialog-content">
+                <h3>🌟 Game Information</h3>
+                <p>
+                    Cosmic Clicker is an incremental clicking game where you collect cosmic energy
+                    from a mystical planet. Click to gather energy, purchase upgrades, and unlock
+                    achievements as you progress through the cosmos!
+                </p>
 
-    <script>
-        // Game State
-        let gameState = {
-            energy: 0,
-            clickCount: 0,
-            clickPower: 1,
-            energyPerSecond: 0,
-            playTime: 0,
-            lastUpdate: Date.now(),
-            upgrades: {
-                autoClicker: { level: 0, baseCost: 10, baseProduction: 0.5 },
-                clickBoost: { level: 0, baseCost: 50, multiplier: 2 },
-                energyMultiplier: { level: 0, baseCost: 200, multiplier: 1.5 },
-                cosmicAmplifier: { level: 0, baseCost: 1000, multiplier: 3 }
-            },
-            achievements: [
-                { id: 'first_click', name: 'First Contact', description: 'Click the planet for the first time', unlocked: false, condition: () => gameState.clickCount >= 1 },
-                { id: 'hundred_clicks', name: 'Energy Collector', description: 'Click 100 times', unlocked: false, condition: () => gameState.clickCount >= 100 },
-                { id: 'thousand_energy', name: 'Energy Master', description: 'Collect 1,000 energy', unlocked: false, condition: () => gameState.energy >= 1000 },
-                { id: 'ten_k_clicks', name: 'Cosmic Warrior', description: 'Click 10,000 times', unlocked: false, condition: () => gameState.clickCount >= 10000 },
-                { id: 'million_energy', name: 'Cosmic God', description: 'Collect 1,000,000 energy', unlocked: false, condition: () => gameState.energy >= 1000000 },
-                { id: 'auto_clicker_10', name: 'Automation Expert', description: 'Reach level 10 Auto Clicker', unlocked: false, condition: () => gameState.upgrades.autoClicker.level >= 10 },
-                { id: 'hour_played', name: 'Dedicated Player', description: 'Play for 1 hour', unlocked: false, condition: () => gameState.playTime >= 3600 }
-            ]
-        };
+                <h3>👨‍💻 Author</h3>
+                <p>
+                    Created by <strong>Andrew Wooldridge</strong>
+                </p>
 
-        // DOM Elements
-        const elements = {
-            energy: document.getElementById('energy'),
-            clickCount: document.getElementById('clickCount'),
-            energyPerSecond: document.getElementById('energyPerSecond'),
-            playTime: document.getElementById('playTime'),
-            clickPower: document.getElementById('clickPower'),
-            planet: document.getElementById('planet'),
-            particleContainer: document.getElementById('particleContainer'),
-            upgradesList: document.getElementById('upgradesList'),
-            achievementsGrid: document.getElementById('achievementsGrid')
-        };
+                <h3>🔗 Repository</h3>
+                <p>
+                    <a href="https://github.com/triptych/clicker-game-cosmic" target="_blank" rel="noopener noreferrer">
+                        github.com/triptych/clicker-game-cosmic
+                    </a>
+                </p>
 
-        // Create starfield
-        function createStarfield() {
-            const starfield = document.getElementById('starfield');
-            for (let i = 0; i < 200; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.width = Math.random() * 3 + 1 + 'px';
-                star.style.height = star.style.width;
-                star.style.animationDelay = Math.random() * 3 + 's';
-                starfield.appendChild(star);
-            }
-        }
+                <h3>💾 Features</h3>
+                <p>
+                    • Auto-save functionality<br>
+                    • Offline progress tracking<br>
+                    • Multiple upgrade paths<br>
+                    • Achievement system<br>
+                    • Beautiful cosmic theme
+                </p>
+            </div>
+            <div class="dialog-footer">
+                <button class="dialog-btn" id="closeDialogBtn">Close</button>
+            </div>
+        </dialog>
 
-        // Format large numbers
-        function formatNumber(num) {
-            if (num < 1000) return Math.floor(num).toString();
-            if (num < 1000000) return (num / 1000).toFixed(1) + 'K';
-            if (num < 1000000000) return (num / 1000000).toFixed(1) + 'M';
-            return (num / 1000000000).toFixed(1) + 'B';
-        }
+        <script type="module" src="js/game.js"></script>
+    </body>
 
-        // Format time
-        function formatTime(seconds) {
-            const hours = Math.floor(seconds / 3600);
-            const minutes = Math.floor((seconds % 3600) / 60);
-            const secs = Math.floor(seconds % 60);
-            if (hours > 0) {
-                return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-            }
-            return `${minutes}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        // Update display
-        function updateDisplay() {
-            elements.energy.textContent = formatNumber(gameState.energy);
-            elements.clickCount.textContent = formatNumber(gameState.clickCount);
-            elements.energyPerSecond.textContent = formatNumber(gameState.energyPerSecond);
-            elements.playTime.textContent = formatTime(gameState.playTime);
-            elements.clickPower.textContent = formatNumber(getClickPower());
-        }
-
-        // Get current click power
-        function getClickPower() {
-            let power = gameState.clickPower;
-            if (gameState.upgrades.clickBoost.level > 0) {
-                power *= Math.pow(gameState.upgrades.clickBoost.multiplier, gameState.upgrades.clickBoost.level);
-            }
-            if (gameState.upgrades.energyMultiplier.level > 0) {
-                power *= Math.pow(gameState.upgrades.energyMultiplier.multiplier, gameState.upgrades.energyMultiplier.level);
-            }
-            if (gameState.upgrades.cosmicAmplifier.level > 0) {
-                power *= Math.pow(gameState.upgrades.cosmicAmplifier.multiplier, gameState.upgrades.cosmicAmplifier.level);
-            }
-            return power;
-        }
-
-        // Get upgrade cost
-        function getUpgradeCost(upgrade) {
-            return Math.floor(upgrade.baseCost * Math.pow(1.5, upgrade.level));
-        }
-
-        // Get auto production
-        function getAutoProduction() {
-            let production = 0;
-            if (gameState.upgrades.autoClicker.level > 0) {
-                production = gameState.upgrades.autoClicker.baseProduction * gameState.upgrades.autoClicker.level;
-                if (gameState.upgrades.energyMultiplier.level > 0) {
-                    production *= Math.pow(gameState.upgrades.energyMultiplier.multiplier, gameState.upgrades.energyMultiplier.level);
-                }
-                if (gameState.upgrades.cosmicAmplifier.level > 0) {
-                    production *= Math.pow(gameState.upgrades.cosmicAmplifier.multiplier, gameState.upgrades.cosmicAmplifier.level);
-                }
-            }
-            return production;
-        }
-
-        // Create particle effect
-        function createParticle(x, y) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = x + 'px';
-            particle.style.top = y + 'px';
-            elements.particleContainer.appendChild(particle);
-            
-            setTimeout(() => {
-                if (particle.parentNode) {
-                    particle.parentNode.removeChild(particle);
-                }
-            }, 2000);
-        }
-
-        // Create number popup
-        function createNumberPopup(x, y, number) {
-            const popup = document.createElement('div');
-            popup.className = 'number-popup';
-            popup.textContent = '+' + formatNumber(number);
-            popup.style.left = x + 'px';
-            popup.style.top = y + 'px';
-            elements.particleContainer.appendChild(popup);
-            
-            setTimeout(() => {
-                if (popup.parentNode) {
-                    popup.parentNode.removeChild(popup);
-                }
-            }, 1500);
-        }
-
-        // Handle planet click
-        elements.planet.addEventListener('click', (e) => {
-            const rect = elements.planet.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            gameState.clickCount++;
-            const clickValue = getClickPower();
-            gameState.energy += clickValue;
-            
-            // Create effects
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    createParticle(
-                        x + (Math.random() - 0.5) * 50,
-                        y + (Math.random() - 0.5) * 50
-                    );
-                }, i * 50);
-            }
-            
-            createNumberPopup(x, y - 30, clickValue);
-            updateDisplay();
-            checkAchievements();
-            updateUpgrades();
-        });
-
-        // Create upgrade elements
-        function createUpgrades() {
-            const upgrades = [
-                {
-                    id: 'autoClicker',
-                    name: 'Auto Clicker',
-                    description: 'Generates energy automatically',
-                    icon: '🤖'
-                },
-                {
-                    id: 'clickBoost',
-                    name: 'Click Boost',
-                    description: 'Increases click power',
-                    icon: '⚡'
-                },
-                {
-                    id: 'energyMultiplier',
-                    name: 'Energy Multiplier',
-                    description: 'Multiplies all energy generation',
-                    icon: '✨'
-                },
-                {
-                    id: 'cosmicAmplifier',
-                    name: 'Cosmic Amplifier',
-                    description: 'Massive power boost',
-                    icon: '🌟'
-                }
-            ];
-
-            upgrades.forEach(upgrade => {
-                const element = document.createElement('div');
-                element.className = 'upgrade-item';
-                element.id = `upgrade-${upgrade.id}`;
-                element.innerHTML = `
-                    <div class="upgrade-count" id="count-${upgrade.id}">0</div>
-                    <div class="upgrade-name">${upgrade.icon} ${upgrade.name}</div>
-                    <div class="upgrade-description">${upgrade.description}</div>
-                    <div class="upgrade-cost" id="cost-${upgrade.id}">Cost: 10</div>
-                `;
-                
-                element.addEventListener('click', () => purchaseUpgrade(upgrade.id));
-                elements.upgradesList.appendChild(element);
-            });
-        }
-
-        // Update upgrades display
-        function updateUpgrades() {
-            Object.keys(gameState.upgrades).forEach(upgradeId => {
-                const upgrade = gameState.upgrades[upgradeId];
-                const cost = getUpgradeCost(upgrade);
-                const element = document.getElementById(`upgrade-${upgradeId}`);
-                const costElement = document.getElementById(`cost-${upgradeId}`);
-                const countElement = document.getElementById(`count-${upgradeId}`);
-                
-                countElement.textContent = upgrade.level;
-                costElement.textContent = `Cost: ${formatNumber(cost)}`;
-                
-                element.disabled = gameState.energy < cost;
-            });
-        }
-
-        // Purchase upgrade
-        function purchaseUpgrade(upgradeId) {
-            const upgrade = gameState.upgrades[upgradeId];
-            const cost = getUpgradeCost(upgrade);
-            
-            if (gameState.energy >= cost) {
-                gameState.energy -= cost;
-                upgrade.level++;
-                
-                // Recalculate energy per second
-                gameState.energyPerSecond = getAutoProduction();
-                
-                updateDisplay();
-                updateUpgrades();
-                checkAchievements();
-            }
-        }
-
-        // Create achievements
-        function createAchievements() {
-            gameState.achievements.forEach(achievement => {
-                const element = document.createElement('div');
-                element.className = 'achievement';
-                element.id = `achievement-${achievement.id}`;
-                element.innerHTML = `
-                    <div class="achievement-name">${achievement.name}</div>
-                    <div class="achievement-description">${achievement.description}</div>
-                `;
-                elements.achievementsGrid.appendChild(element);
-            });
-        }
-
-        // Check achievements
-        function checkAchievements() {
-            gameState.achievements.forEach(achievement => {
-                if (!achievement.unlocked && achievement.condition()) {
-                    achievement.unlocked = true;
-                    const element = document.getElementById(`achievement-${achievement.id}`);
-                    element.classList.add('unlocked');
-                    
-                    // Achievement notification could be added here
-                }
-            });
-        }
-
-        // Game loop
-        function gameLoop() {
-            const now = Date.now();
-            const deltaTime = (now - gameState.lastUpdate) / 1000;
-            gameState.lastUpdate = now;
-            
-            // Update play time
-            gameState.playTime += deltaTime;
-            
-            // Auto generate energy
-            if (gameState.energyPerSecond > 0) {
-                gameState.energy += gameState.energyPerSecond * deltaTime;
-            }
-            
-            updateDisplay();
-            checkAchievements();
-            updateUpgrades();
-            
-            requestAnimationFrame(gameLoop);
-        }
-
-        // Initialize game
-        function init() {
-            createStarfield();
-            createUpgrades();
-            createAchievements();
-            updateDisplay();
-            updateUpgrades();
-            gameLoop();
-        }
-
-        // Start the game
-        init();
-    </script>
-</body>
 </html>

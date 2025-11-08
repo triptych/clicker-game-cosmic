@@ -1,0 +1,510 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: #0a0a0a;
+    color: #ffffff;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Animated Starfield Background */
+.starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0a 100%);
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Main Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff;
+    margin-bottom: 10px;
+    animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        text-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff;
+    }
+
+    50% {
+        text-shadow: 0 0 30px #00d4ff, 0 0 60px #00d4ff;
+    }
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #8b5cf6;
+    opacity: 0.8;
+}
+
+/* Header Controls */
+.header-controls {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    gap: 10px;
+}
+
+.header-btn {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: #8b5cf6;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.header-btn:hover {
+    border-color: #00d4ff;
+    color: #00d4ff;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.header-btn.danger {
+    color: #ff4757;
+    border-color: rgba(255, 71, 87, 0.3);
+}
+
+.header-btn.danger:hover {
+    border-color: #ff4757;
+    box-shadow: 0 0 15px rgba(255, 71, 87, 0.3);
+}
+
+/* Dialog Styles */
+dialog {
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(139, 92, 246, 0.5);
+    border-radius: 15px;
+    padding: 0;
+    max-width: 500px;
+    width: 90%;
+    color: white;
+    box-shadow: 0 0 50px rgba(139, 92, 246, 0.3);
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.dialog-header {
+    background: linear-gradient(135deg, #8b5cf6 0%, #00d4ff 100%);
+    padding: 20px;
+    border-radius: 13px 13px 0 0;
+    text-align: center;
+}
+
+.dialog-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.dialog-content {
+    padding: 25px;
+    line-height: 1.8;
+}
+
+.dialog-content h3 {
+    color: #00d4ff;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.dialog-content p {
+    margin-bottom: 15px;
+    color: #cccccc;
+}
+
+.dialog-content a {
+    color: #06ffa5;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.dialog-content a:hover {
+    color: #00d4ff;
+    text-shadow: 0 0 10px #00d4ff;
+}
+
+.dialog-footer {
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.dialog-btn {
+    background: linear-gradient(135deg, #8b5cf6 0%, #00d4ff 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 30px;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dialog-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+}
+
+/* Stats Display */
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.stat-box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 15px;
+    padding: 15px 25px;
+    text-align: center;
+    min-width: 150px;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #00d4ff;
+    text-shadow: 0 0 10px #00d4ff;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #8b5cf6;
+    margin-top: 5px;
+}
+
+/* Main Game Area */
+.game-area {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Clicker Section */
+.clicker-section {
+    text-align: center;
+    flex: 1;
+    min-width: 300px;
+}
+
+.cosmic-planet {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: url('cosmic_planet.png') center/cover;
+    margin: 0 auto 20px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+    animation: planet-glow 3s infinite;
+}
+
+@keyframes planet-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 80px rgba(0, 212, 255, 0.8), 0 0 100px rgba(139, 92, 246, 0.3);
+    }
+}
+
+.cosmic-planet:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 80px rgba(0, 212, 255, 0.8);
+}
+
+.cosmic-planet:active {
+    transform: scale(0.95);
+}
+
+.click-power {
+    font-size: 1.1rem;
+    color: #06ffa5;
+    margin-bottom: 10px;
+}
+
+/* Particle Container */
+.particle-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #00d4ff;
+    border-radius: 50%;
+    animation: particle-float 2s ease-out forwards;
+    box-shadow: 0 0 10px #00d4ff;
+}
+
+@keyframes particle-float {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-100px) scale(0);
+    }
+}
+
+.number-popup {
+    position: absolute;
+    color: #06ffa5;
+    font-weight: bold;
+    font-size: 1.2rem;
+    pointer-events: none;
+    animation: number-rise 1.5s ease-out forwards;
+    text-shadow: 0 0 10px #06ffa5;
+}
+
+@keyframes number-rise {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-80px);
+    }
+}
+
+/* Upgrades Section */
+.upgrades-section {
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    color: #8b5cf6;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 0 0 10px #8b5cf6;
+}
+
+.upgrade-item {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.upgrade-item:hover {
+    border-color: #00d4ff;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.upgrade-item:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.upgrade-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #00d4ff;
+    margin-bottom: 5px;
+}
+
+.upgrade-description {
+    font-size: 0.9rem;
+    color: #cccccc;
+    margin-bottom: 8px;
+}
+
+.upgrade-cost {
+    font-size: 0.9rem;
+    color: #06ffa5;
+    font-weight: bold;
+}
+
+.upgrade-count {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: #8b5cf6;
+    color: white;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Achievements Section */
+.achievements-section {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.achievement {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 12px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.achievement.unlocked {
+    border-color: #06ffa5;
+    box-shadow: 0 0 20px rgba(6, 255, 165, 0.3);
+}
+
+.achievement-name {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #8b5cf6;
+    margin-bottom: 5px;
+}
+
+.achievement-description {
+    font-size: 0.9rem;
+    color: #cccccc;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .title {
+        font-size: 2rem;
+    }
+
+    .header-controls {
+        position: static;
+        justify-content: center;
+        margin-top: 15px;
+    }
+
+    .stats {
+        gap: 15px;
+    }
+
+    .stat-box {
+        min-width: 120px;
+        padding: 10px 15px;
+    }
+
+    .cosmic-planet {
+        width: 200px;
+        height: 200px;
+    }
+
+    .game-area {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Loading Animation */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(0, 212, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #00d4ff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
