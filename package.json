@@ -1,0 +1,20 @@
+{
+    "name": "cosmic-clicker",
+    "version": "1.0.0",
+    "description": "A beautiful space-themed incremental clicker game",
+    "main": "index.html",
+    "scripts": {
+        "start": "npx serve -s . -l 8000",
+        "dev": "npx serve -s . -l 8000"
+    },
+    "keywords": [
+        "game",
+        "clicker",
+        "incremental",
+        "cosmic",
+        "space"
+    ],
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {}
+}
